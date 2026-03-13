@@ -1,0 +1,82 @@
+{% extends 'admin1/base.html' %}
+{% block content %}
+<style>
+    .warehouse-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .warehouse-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .back-link {
+        margin-top: 20px;
+        display: inline-block;
+        color: #007BFF;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="warehouse-container">
+    <h2>Warehouse List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for warehouse in warehouses %}
+            <tr>
+                <td>{{ warehouse.id }}</td>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.location }}</td>
+                <td>
+                    <a href="{% url 'edit_warehouse' warehouse.id %}" class="action-btn">Edit</a> |
+                    <a href="{% url 'delete_warehouse' warehouse.id %}" class="action-btn" onclick="return confirm('Delete this warehouse?')">Delete</a>
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'add_warehouse' %}" class="back-link">+ Add New Warehouse</a>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'admin1/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-lg shadow-lg max-w-7xl mx-auto mt-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">Admin Dashboard</h2>
+    <p class="text-gray-600 mb-8">Monitor and manage your supply chain operations from here.</p>
+
+    <!-- Quick Stats Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-blue-100 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-blue-800">Total Suppliers</h3>
+            <p class="text-2xl font-bold text-blue-600">{{ suppliers_count }}</p>
+            <a href="{% url 'view_suppliers' %}" class="text-blue-500 hover:underline">View Details</a>
+        </div>
+        <div class="bg-green-100 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-green-800">Total Logistic Partners</h3>
+            <p class="text-2xl font-bold text-green-600">{{ logistic_partners_count }}</p>
+            <a href="{% url 'view_logistic_partners' %}" class="text-green-500 hover:underline">View Details</a>
+        </div>
+        <div class="bg-purple-100 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-purple-800">Total Orders</h3>
+            <p class="text-2xl font-bold text-purple-600">{{ orders_count }}</p>
+            <a href="{% url 'admin_order_list' %}" class="text-purple-500 hover:underline">View Orders</a>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-yellow-800">Active Shipments</h3>
+            <p class="text-2xl font-bold text-yellow-600">{{ shipments_count }}</p>
+            <a href="{% url 'shipment_list' %}" class="text-yellow-500 hover:underline">View Shipments</a>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <a href="{% url 'warehouse_list' %}" class="bg-gray-100 text-gray-800 p-4 rounded-lg hover:bg-gray-200 text-center shadow-md">
+            <h3 class="text-lg font-semibold">Manage Warehouses</h3>
+            <p class="text-gray-600">View and edit warehouse details</p>
+        </a>
+        <a href="{% url 'product_list' %}" class="bg-gray-100 text-gray-800 p-4 rounded-lg hover:bg-gray-200 text-center shadow-md">
+            <h3 class="text-lg font-semibold">Manage Products</h3>
+            <p class="text-gray-600">Add or update product inventory</p>
+        </a>
+        <a href="{% url 'stock_chart' %}" class="bg-gray-100 text-gray-800 p-4 rounded-lg hover:bg-gray-200 text-center shadow-md">
+            <h3 class="text-lg font-semibold">View Stock Levels</h3>
+            <p class="text-gray-600">Analyze inventory with charts</p>
+        </a>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h3>
+        <ul class="space-y-4">
+            {% for order in recent_orders %}
+                <li class="flex justify-between items-center">
+                    <span>Order #{{ order.order_id }} by {{ order.customer.full_name }} ({{ order.order_status }})</span>
+                    <a href="{% url 'create_shipment' order.order_id %}" class="text-blue-500 hover:underline">
+                        {% if order.order_status == 'processing' %}Create Shipment{% else %}View{% endif %}
+                    </a>
+                </li>
+            {% empty %}
+                <li class="text-gray-600">No recent orders.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

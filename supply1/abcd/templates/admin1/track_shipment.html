@@ -1,0 +1,46 @@
+{% extends 'admin1/base.html' %}
+{% block title %}Track Shipment {{ shipment.tracking_number }}{% endblock %}
+{% block content %}
+<section class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white rounded-top-3">
+            <h2 class="card-title mb-0 fw-bold fs-4">Track Shipment {{ shipment.tracking_number }}</h2>
+        </div>
+        <div class="card-body p-5">
+            {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} alert-dismissible fade show rounded-3" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5 mb-3">Shipment Details</h3>
+                    <p class="mb-1"><strong>Order ID:</strong> {{ shipment.order.order_id }}</p>
+                    <p class="mb-1"><strong>Customer:</strong> {{ shipment.order.customer.full_name|default:shipment.order.customer.username }}</p>
+                    <p class="mb-1"><strong>Product:</strong> {{ shipment.order.product.name }}</p>
+                    <p class="mb-1"><strong>Status:</strong> {{ shipment.shipment_status|title }}</p>
+                    <p class="mb-1"><strong>Current Location:</strong> {{ shipment.current_location }}</p>
+                    <p class="mb-1"><strong>Estimated Delivery:</strong> {{ shipment.estimated_delivery }}</p>
+                    <p class="mb-1"><strong>Logistics Partner:</strong> {{ shipment.logistics_partner.full_name|default:shipment.logistics_partner.username }}</p>
+                </div>
+            </div>
+
+            {% if shipment.shipment_status == 'in_transit' %}
+            <form method="post" action="{% url 'mark_shipment_delivered' shipment.tracking_number %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success rounded-pill px-4 mb-3">Mark as Delivered</button>
+            </form>
+            {% endif %}
+
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'admin_order_list' %}" class="btn btn-outline-secondary rounded-pill px-4">Back to Orders</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

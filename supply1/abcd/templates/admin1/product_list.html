@@ -1,0 +1,111 @@
+{% extends 'admin1/base.html' %}
+{% block content %}
+
+<style>
+    .product-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .add-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 16px;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .add-btn:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .restock-yes {
+        color: red;
+        font-weight: bold;
+    }
+
+    .restock-no {
+        color: green;
+    }
+    .action-btn {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+<div class="product-container">
+    <h2>Product List</h2>
+    <a href="{% url 'add_product' %}" class="add-btn">+ Add New Product</a>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Quantity</th>
+            <th>Restock</th>
+            <th>Warehouse</th>
+            <th>Supplier</th>
+            <th>Action</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+                {% if product.needs_restock %}
+                    <span class="restock-yes">Yes</span>
+                {% else %}
+                    <span class="restock-no">No</span>
+                {% endif %}
+            </td>
+            <td>{{ product.warehouse.name }}</td>
+            <td>{{ product.supplier.full_name }}</td>
+            <td>
+                <a href="{% url 'edit_product' product.id %}" class="action-btn">Edit</a> |
+                <a href="{% url 'delete_product' product.id %}" class="action-btn" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

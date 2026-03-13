@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Supplier Dashboard{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('ml-64');
+            mainContent.classList.toggle('ml-0');
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-blue-700 text-white p-4 flex justify-between items-center fixed w-full top-0 z-20 shadow-md">
+        <div class="flex items-center">
+            <button onclick="toggleSidebar()" class="mr-4 focus:outline-none md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            <h1 class="text-xl font-bold">Supplier Dashboard</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm hidden md:block">Welcome, {{ user.full_name|default:user.username }}</span>
+            <a href="{% url 'logout_view' %}" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="bg-gray-900 text-white w-64 h-screen fixed top-0 mt-16 transition-all duration-300 md:block hidden">
+        <ul class="mt-6">
+          <li class="p-4 hover:bg-gray-700"><a href="{% url 'supplier_dashboard' %}" class="block">Dashboard</a></li>
+            <li class="p-4 hover:bg-gray-700"><a href="{% url 'supplier_order_list' %}" class="block">Pending Orders</a></li>
+            <li class="p-4 hover:bg-gray-700"><a href="{% url 'add_stock_movement' %}" class="block">Manage Stock</a></li>
+            <a href="{% url 'stock_movement_list' %}" class="block px-4 py-2 text-gray-200 hover:bg-blue-700">Stock Movements</a>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="ml-0 md:ml-64 mt-16 p-6 transition-all duration-300 max-w-7xl mx-auto">
+        {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                    <div class="bg-{% if message.tags == 'success' %}green{% else %}red{% endif %}-100 border border-{% if message.tags == 'success' %}green{% else %}red{% endif %}-400 text-{% if message.tags == 'success' %}green{% else %}red{% endif %}-700 px-4 py-3 rounded flex justify-between items-center">
+                        <span>{{ message }}</span>
+                        <button onclick="this.parentElement.remove()" class="text-sm hover:underline">Dismiss</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

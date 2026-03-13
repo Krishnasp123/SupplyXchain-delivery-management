@@ -1,0 +1,29 @@
+{% extends 'admin1/base.html' %}
+{% block title %}Stock Analytics{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4">Stock Levels by Product</h2>
+    <canvas id="stockChart"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('stockChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Stock Levels',
+                data: {{ data|safe }},
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                borderColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Quantity' } }, x: { title: { display: true, text: 'Products' } } },
+            plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Stock Levels by Product' } }
+        }
+    });
+</script>
+{% endblock %}

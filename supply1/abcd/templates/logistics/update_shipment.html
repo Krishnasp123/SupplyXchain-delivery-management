@@ -1,0 +1,40 @@
+{% extends 'logistics/base.html' %}
+{% block title %}Update Shipment {{ shipment.tracking_number }}{% endblock %}
+{% block content %}
+<section class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white rounded-top-3">
+            <h2 class="card-title mb-0 fw-bold fs-4">Update Shipment {{ shipment.tracking_number }}</h2>
+        </div>
+        <div class="card-body p-5">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title h5 mb-3">Shipment Details</h3>
+                    <p class="mb-1"><strong>Order ID:</strong> {{ shipment.order.order_id }}</p>
+                    <p class="mb-1"><strong>Product:</strong> {{ shipment.order.product.name }}</p>
+                    <p class="mb-1"><strong>Customer:</strong> {{ shipment.order.customer.full_name }}</p>
+                    <p class="mb-1"><strong>Current Status:</strong> {{ shipment.shipment_status|title }}</p>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="shipment_status" class="form-label fw-medium">Shipment Status</label>
+                    <select id="shipment_status" name="shipment_status" class="form-select rounded-3" required>
+                        <option value="in_transit" {% if shipment.shipment_status == 'in_transit' %}selected{% endif %}>In Transit</option>
+                        <option value="delivered" {% if shipment.shipment_status == 'delivered' %}selected{% endif %}>Delivered</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="current_location" class="form-label fw-medium">Current Location</label>
+                    <input type="text" id="current_location" name="current_location" value="{{ shipment.current_location }}" class="form-control rounded-3" required>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{% url 'shipment_list_partner' %}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">Update Shipment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

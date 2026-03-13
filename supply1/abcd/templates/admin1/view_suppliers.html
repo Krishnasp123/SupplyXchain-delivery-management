@@ -1,0 +1,39 @@
+{% extends 'admin1/base.html' %}
+
+{% block title %}View Suppliers{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4">Suppliers</h2>
+    <table class="w-full border-collapse">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="p-2 border">Username</th>
+                <th class="p-2 border">Full Name</th>
+                <th class="p-2 border">Email</th>
+                <th class="p-2 border">Phone</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in suppliers %}
+            <tr class="hover:bg-gray-100">
+                <td class="p-2 border">{{ user.username }}</td>
+                <td class="p-2 border">{{ user.full_name }}</td>
+                <td class="p-2 border">{{ user.email }}</td>
+                <td class="p-2 border">{{ user.contact_no }}</td>
+                <td class="p-2 border">
+                    <a href="{% url 'edit_supplier' user.id %}">Edit</a> |
+                    <a href="{% url 'delete_supplier' user.id %}" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="p-2 border text-center">No suppliers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

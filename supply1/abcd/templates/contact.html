@@ -1,0 +1,95 @@
+{% extends 'base1.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Supply Chain Delivery System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Supply Chain Delivery System</h1>
+        <p>Contact Us</p>
+    </header>
+
+    <section>
+        <h2>Get in Touch</h2>
+        <p>
+            Have questions or need support? Fill out the form below or reach us directly through our contact details.
+        </p>
+
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your full name">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Your email address">
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="5" placeholder="Write your message here..."></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <h2>Contact Information</h2>
+        <p>
+            📧 Email: support@supplychain.com <br>
+            ☎ Phone: +91-9876543210 <br>
+            📍 Address: 123 Logistics Park, Bengaluru, India
+        </p>
+    </section>
+</body>
+</html>
+{% endblock %}

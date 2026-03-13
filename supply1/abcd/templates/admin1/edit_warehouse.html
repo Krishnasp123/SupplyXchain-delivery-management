@@ -1,0 +1,65 @@
+{% extends 'admin1/base.html' %}
+{% block content %}
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        display: block;
+        color: #555;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #28a745;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Edit Warehouse</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="name">Warehouse Name</label>
+        <input type="text" id="name" name="name" value="{{ warehouse.name }}" required>
+
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" value="{{ warehouse.location }}" required>
+
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

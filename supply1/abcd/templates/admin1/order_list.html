@@ -1,0 +1,166 @@
+{% extends 'admin1/base.html' %}
+{% block title %}All Orders{% endblock %}
+{% block content %}
+{% load custom_tags %}
+<style>
+    /* Buttons */
+.btn-outline-info {
+  color: #0dcaf0;
+  border-color: #0dcaf0;
+  transition: all 0.3s ease;
+}
+.btn-outline-info:hover, 
+.btn-outline-info:focus {
+  background-color: #0dcaf0;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(13, 202, 240, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-outline-warning {
+  color: #ffc107;
+  border-color: #ffc107;
+  transition: all 0.3s ease;
+}
+.btn-outline-warning:hover, 
+.btn-outline-warning:focus {
+  background-color: #ffc107;
+  color: #212529;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+  transition: all 0.3s ease;
+}
+.btn-outline-secondary:hover, 
+.btn-outline-secondary:focus {
+  background-color: #6c757d;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Button shape */
+.btn-sm {
+  border-radius: 30px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Table */
+.table th, .table td {
+  vertical-align: middle;
+}
+.table-hover tbody tr:hover {
+  background-color: #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+/* Card */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  .btn-sm {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.9rem;
+  }
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+</style>
+<section class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white rounded-top-3">
+            <h2 class="card-title mb-0 fw-bold fs-4">All Orders</h2>
+        </div>
+        <div class="card-body p-5">
+            
+            {% if orders %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover align-middle">
+                        <thead class="table-dark position-sticky top-0 z-10">
+                            <tr>
+                                <th scope="col" class="py-3 px-4 text-start">Order ID</th>
+                                <th scope="col" class="py-3 px-4 text-start">Customer</th>
+                                <th scope="col" class="py-3 px-4 text-start">Product</th>
+                                <th scope="col" class="py-3 px-4 text-center">Quantity</th>
+                                <th scope="col" class="py-3 px-4 text-center">Total Amount</th>
+                                <th scope="col" class="py-3 px-4 text-center">Status</th>
+                                <th scope="col" class="py-3 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr class="transition-colors">
+                                    <td class="py-3 px-4">{{ order.order_id }}</td>
+                                    <td class="py-3 px-4">{{ order.customer.full_name|default:order.customer.username }}</td>
+                                    <td class="py-3 px-4">{{ order.product.name }}</td>
+                                    <td class="py-3 px-4 text-center">{{ order.quantity }}</td>
+                                    <td class="py-3 px-4 text-center">{{ order.total_amount }}</td>
+                                    <td class="py-3 px-4 text-center">{{ order.order_status|title }}</td>
+<td class="py-3 px-4 text-center">
+    {% if order.order_id in order_shipment_map %}
+        {% with shipment=order_shipment_map|dict_get:order.order_id %}
+            <a href="{% url 'track_shipment_admin' shipment.tracking_number %}" class="btn btn-outline-info btn-sm px-3 py-1 rounded-pill me-1">Track</a>
+        {% endwith %}
+    {% elif order.order_status == 'processing' %}
+        <a href="{% url 'create_shipment' order.order_id %}" class="btn btn-outline-warning btn-sm px-3 py-1 rounded-pill">Create Shipment</a>
+    {% elif order.order_status == 'paid' %}
+        <span class="text-danger">Payment Complete</span>
+    {% elif order.order_status in 'shipped,delivered' %}
+        <span class="text-warning">Shipment Missing</span>
+    {% else %}
+        <span class="text-muted">No Action</span>
+    {% endif %}
+
+    <a href="{% url 'order_detail_admin' order.order_id %}" class="btn btn-outline-secondary btn-sm px-3 py-1 rounded-pill mt-1">Details</a>
+</td>
+
+
+
+
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center rounded-3 mt-3">
+                    <i class="bi bi-info-circle me-2"></i>No orders found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<style>
+    .table th, .table td { vertical-align: middle; }
+    .table-hover tbody tr:hover { background-color: #f1f5f9; transition: background-color 0.2s ease; }
+    .table-dark th { background-color: #212529; color: #ffffff; font-weight: 500; }
+    .btn-primary { background-color: #007bff; border-color: #007bff; transition: all 0.3s ease; }
+    .btn-primary:hover { background-color: #0056b3; border-color: #004085; transform: translateY(-1px); }
+    .card { transition: transform 0.2s ease; }
+    .card:hover { transform: translateY(-5px); }
+    @media (max-width: 768px) {
+        .table-responsive { font-size: 0.9rem; }
+        .btn-sm { font-size: 0.8rem; padding: 0.25rem 0.75rem; }
+        .card-body { padding: 1.5rem; }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base1.html' %}
+{% block content %}
+    <!-- About Section -->
+    <section id="about" class="about section mt-4">
+
+      <div class="container mt-4">
+
+         <div class="card-body">
+            <h2 class="card-title mb-4">Place Order</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="product" class="form-label">Product</label>
+                    <select id="product" name="product" class="form-select" required>
+                        <option value="" disabled selected>Select a product</option>
+                        {% for product in products %}
+                            <option value="{{ product.id }}">{{ product.name }} (Stock: {{ product.quantity }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Place Order</button>
+            </form>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+<section class="container mt-5">
+    <div class="card shadow">
+      
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'admin1/base.html' %}
+{% block content %}
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 3px #007BFF55;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="form-container">
+        <h2>Add Product</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Name</label>
+            <input type="text" name="name" required>
+
+            <label>SKU</label>
+            <input type="text" name="sku" required>
+
+            <label>Quantity</label>
+            <input type="number" name="quantity" required>
+
+            <label>Restock Threshold</label>
+            <input type="number" name="restock_threshold" required>
+
+            <label>Warehouse</label>
+            <select name="warehouse" required>
+                {% for wh in warehouses %}
+                <option value="{{ wh.id }}">{{ wh.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Supplier</label>
+            <select name="supplier" required>
+                {% for sup in suppliers %}
+                <option value="{{ sup.id }}">{{ sup.full_name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+{% endblock %}

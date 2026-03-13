@@ -1,0 +1,54 @@
+{% extends 'admin1/base.html' %}
+
+{% block title %}Create Shipment for Order {{ order.order_id }}{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl mx-auto mt-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">Create Shipment for Order {{ order.order_id }}</h2>
+    <p class="text-gray-600 mb-6">Assign a logistics partner and set an estimated delivery date for the shipment.</p>
+
+    <!-- Order Details -->
+    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Order Details</h3>
+        <p class="text-sm text-gray-600"><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p class="text-sm text-gray-600"><strong>Product:</strong> {{ order.product.name }}</p>
+        <p class="text-sm text-gray-600"><strong>Quantity:</strong> {{ order.quantity }}</p>
+        <p class="text-sm text-gray-600"><strong>Customer:</strong> {{ order.customer.full_name }}</p>
+        <p class="text-sm text-gray-600"><strong>Warehouse:</strong> {{ order.product.warehouse.name }} ({{ order.product.warehouse.location }})</p>
+        <p class="text-sm text-gray-600"><strong>Status:</strong> {{ order.order_status|title }}</p>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+                <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Shipment Form -->
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        <div>
+            <label for="logistics_partner" class="block text-sm font-medium text-gray-700">Logistics Partner</label>
+            <select id="logistics_partner" name="logistics_partner" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <option value="" disabled selected>Select a logistics partner</option>
+                {% for partner in logistics_partners %}
+                    <option value="{{ partner.id }}">{{ partner.full_name }} ({{ partner.email }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="estimated_delivery" class="block text-sm font-medium text-gray-700">Estimated Delivery Date</label>
+            <input type="date" id="estimated_delivery" name="estimated_delivery" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        </div>
+        <div class="flex justify-end space-x-4">
+            <a href="{% url 'shipment_list' %}" class="inline-block bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200">Cancel</a>
+            <button type="submit" class="inline-block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Create Shipment</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'admin1/base.html' %}
+{% block content %}
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        display: block;
+        color: #555;
+    }
+
+    input[type="text"], input[type="number"], select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #007BFF;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Edit Product</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Name</label>
+        <input type="text" name="name" value="{{ product.name }}" required>
+
+        <label>SKU</label>
+        <input type="text" name="sku" value="{{ product.sku }}" required>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" value="{{ product.quantity }}" required>
+
+        <label>Restock Threshold</label>
+        <input type="number" name="restock_threshold" value="{{ product.restock_threshold }}" required>
+
+        <label>Warehouse</label>
+        <select name="warehouse">
+            {% for wh in warehouses %}
+                <option value="{{ wh.id }}" {% if product.warehouse.id == wh.id %}selected{% endif %}>{{ wh.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Supplier</label>
+        <select name="supplier">
+            {% for sup in suppliers %}
+                <option value="{{ sup.id }}" {% if product.supplier.id == sup.id %}selected{% endif %}>{{ sup.full_name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base1.html' %}
+{% block title %}Track Shipment {{ shipment.tracking_number }}{% endblock %}
+{% block content %}
+<section id="track-shipment" class="section mt-5">
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Track Shipment {{ shipment.tracking_number }}</h2>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="mb-3">
+                    <p class="mb-2"><strong>Order:</strong> {{ shipment.order.order_id }}</p>
+                    <p class="mb-2"><strong>Status:</strong> {{ shipment.shipment_status|title }}</p>
+                    <p class="mb-2"><strong>Current Location:</strong> {{ shipment.current_location }}</p>
+                    <p class="mb-2"><strong>Estimated Delivery:</strong> {{ shipment.estimated_delivery }}</p>
+                </div>
+                <a href="{% url 'order_list' %}" class="btn btn-outline-primary">Back to Orders</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

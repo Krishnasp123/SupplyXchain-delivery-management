@@ -1,0 +1,78 @@
+{% extends 'base1.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Supply Chain Delivery System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .service {
+            margin-bottom: 20px;
+        }
+        .service h3 {
+            color: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Supply Chain Delivery System</h1>
+        <p>Our Services</p>
+    </header>
+
+    <section>
+        <h2>What We Offer</h2>
+
+        <div class="service">
+            <h3>📦 Real-Time Tracking</h3>
+            <p>Track shipments from warehouse to doorstep with live updates and notifications.</p>
+        </div>
+
+        <div class="service">
+            <h3>🚚 Route Optimization</h3>
+            <p>Smart algorithms ensure faster deliveries by minimizing travel time and fuel costs.</p>
+        </div>
+
+        <div class="service">
+            <h3>🏭 Warehouse Integration</h3>
+            <p>Seamless connection with warehouses for inventory management and automated dispatch.</p>
+        </div>
+
+        <div class="service">
+            <h3>🌍 Global Logistics</h3>
+            <p>Cross-border shipping solutions with customs clearance and international delivery support.</p>
+        </div>
+
+        <div class="service">
+            <h3>🔒 Secure Transactions</h3>
+            <p>End-to-end encrypted communication and secure payment handling for peace of mind.</p>
+        </div>
+    </section>
+
+</body>
+</html>
+{% endblock %}
